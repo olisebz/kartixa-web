@@ -14,12 +14,14 @@ CREATE INDEX `idx_teams_league` ON `teams` (`league_id`);
 CREATE INDEX `idx_teams_active` ON `teams` (`is_active`);
 --> statement-breakpoint
 ALTER TABLE `teams` ADD CONSTRAINT `teams_league_id_leagues_id_fk` FOREIGN KEY (`league_id`) REFERENCES `leagues`(`id`) ON DELETE cascade ON UPDATE no action;
+--> statement-breakpoint
 
 ALTER TABLE `drivers` ADD COLUMN `current_team_id` varchar(36);
 --> statement-breakpoint
 CREATE INDEX `idx_drivers_team` ON `drivers` (`current_team_id`);
 --> statement-breakpoint
 ALTER TABLE `drivers` ADD CONSTRAINT `drivers_current_team_id_teams_id_fk` FOREIGN KEY (`current_team_id`) REFERENCES `teams`(`id`) ON DELETE set null ON UPDATE no action;
+--> statement-breakpoint
 
 ALTER TABLE `race_results` ADD COLUMN `team_id` varchar(36);
 --> statement-breakpoint

@@ -1,4 +1,5 @@
 ALTER TABLE `users` ADD COLUMN `email_verified_at` timestamp;
+--> statement-breakpoint
 
 CREATE TABLE `auth_email_challenges` (
 	`id` varchar(36) NOT NULL,
@@ -24,6 +25,7 @@ CREATE INDEX `idx_auth_email_challenges_user` ON `auth_email_challenges` (`user_
 CREATE INDEX `idx_auth_email_challenges_purpose` ON `auth_email_challenges` (`purpose`);
 --> statement-breakpoint
 ALTER TABLE `auth_email_challenges` ADD CONSTRAINT `auth_email_challenges_user_id_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE cascade ON UPDATE no action;
+--> statement-breakpoint
 
 CREATE TABLE `user_trusted_devices` (
 	`id` varchar(36) NOT NULL,
@@ -44,6 +46,7 @@ CREATE INDEX `idx_user_trusted_devices_user` ON `user_trusted_devices` (`user_id
 CREATE INDEX `idx_user_trusted_devices_revoked` ON `user_trusted_devices` (`revoked_at`);
 --> statement-breakpoint
 ALTER TABLE `user_trusted_devices` ADD CONSTRAINT `user_trusted_devices_user_id_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE cascade ON UPDATE no action;
+--> statement-breakpoint
 
 CREATE TABLE `user_auth_sessions` (
 	`id` varchar(36) NOT NULL,

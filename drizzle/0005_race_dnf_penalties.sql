@@ -1,4 +1,5 @@
 ALTER TABLE `race_results` ADD COLUMN `dnf` boolean NOT NULL DEFAULT false;
+--> statement-breakpoint
 
 CREATE TABLE `race_result_penalties` (
 	`id` varchar(36) NOT NULL,

@@ -377,7 +377,32 @@
     },
     "save": "Save Changes",
     "saved": "Settings Saved!",
-    "savedMessage": "Your settings have been updated successfully."
+    "savedMessage": "Your settings have been updated successfully.",
+    "security": {
+      "title": "Security",
+      "description": "Manage active sessions and change your password via email verification.",
+      "noSessions": "No active sessions found.",
+      "currentSession": "Current session",
+      "activeSession": "Active session",
+      "lastActive": "Last active:",
+      "remove": "Remove",
+      "removing": "Removing...",
+      "sessionRemoved": "Session removed",
+      "revokeFailed": "Failed to revoke session",
+      "changePasswordTitle": "Change password (email verification)",
+      "emailCode": "Email code",
+      "codePlaceholder": "6-digit code",
+      "newPassword": "New password",
+      "sendCode": "Send code",
+      "changePassword": "Change password",
+      "updating": "Updating...",
+      "codeSent": "We sent you a verification code for the password change.",
+      "requestCodeFirst": "Please request a verification code first",
+      "passwordTooShort": "New password must be at least 8 characters",
+      "passwordUpdated": "Password updated. Other sessions have been signed out.",
+      "startFailed": "Failed to start password change",
+      "changeFailed": "Failed to change password"
+    }
   },
   "common": {
     "loading": "Loading...",

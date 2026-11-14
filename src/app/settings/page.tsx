@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
 import Input from "@/components/forms/Input";
 import { ApiClientError, api } from "@/lib/api";
+import { useLocale } from "@/LocaleContext";
 import type { LeagueListDTO } from "@/server/domain/dto";
 
 function getSessionPlatform(userAgent: string | null): string {
@@ -44,6 +45,7 @@ function getSessionDisplay(userAgent: string | null): string {
 
 export default function SettingsPage() {
   const router = useRouter();
+  const { t } = useLocale();
 
   const [loading, setLoading] = useState(true);
   const [savingName, setSavingName] = useState(false);
@@ -174,12 +176,10 @@ export default function SettingsPage() {
     try {
       const challenge = await api.auth.password.change.request();
       setPasswordChangeChallengeId(challenge.challengeId);
-      setNotice(
-        "Wir haben dir einen Verifizierungscode für die Passwortänderung gesendet.",
-      );
+      setNotice(t("settings.security.codeSent"));
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : "Failed to start password change";
+        err instanceof Error ? err.message : t("settings.security.startFailed");
       setError(message);
     }
   };
@@ -189,12 +189,12 @@ export default function SettingsPage() {
     setNotice(null);
 
     if (!passwordChangeChallengeId) {
-      setError("Bitte zuerst einen Verifizierungscode anfordern");
+      setError(t("settings.security.requestCodeFirst"));
       return;
     }
 
     if (!newPassword || newPassword.length < 8) {
-      setError("Neues Passwort muss mindestens 8 Zeichen lang sein");
+      setError(t("settings.security.passwordTooShort"));
       return;
     }
 
@@ -208,11 +208,11 @@ export default function SettingsPage() {
       setPasswordChangeChallengeId(null);
       setPasswordChangeCode("");
       setNewPassword("");
-      setNotice("Passwort aktualisiert. Andere Sessions wurden abgemeldet.");
+      setNotice(t("settings.security.passwordUpdated"));
       await loadData();
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : "Failed to change password";
+        err instanceof Error ? err.message : t("settings.security.changeFailed");
       setError(message);
     } finally {
       setChangingPassword(false);
@@ -225,11 +225,11 @@ export default function SettingsPage() {
     setRevokingSessionId(sessionId);
     try {
       await api.auth.sessions.revoke({ sessionId });
-      setNotice("Session wurde entfernt");
+      setNotice(t("settings.security.sessionRemoved"));
       await loadData();
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : "Failed to revoke session";
+        err instanceof Error ? err.message : t("settings.security.revokeFailed");
       setError(message);
     } finally {
       setRevokingSessionId(null);
@@ -374,17 +374,16 @@ export default function SettingsPage() {
       <div className="bg-[var(--color-card)] rounded-2xl p-6 mb-6">
         <h2 className="text-xl font-semibold text-[var(--foreground)] mb-2 flex items-center gap-2">
           <Shield className="w-5 h-5" />
-          Security
+          {t("settings.security.title")}
         </h2>
         <p className="text-[var(--color-muted)] mb-4 text-sm">
-          Manage active sessions and change your password via email
-          verification.
+          {t("settings.security.description")}
         </p>
 
         <div className="space-y-3 mb-5">
           {sessions.length === 0 ? (
             <p className="text-sm text-[var(--color-muted)]">
-              No active sessions found.
+              {t("settings.security.noSessions")}
             </p>
           ) : (
             sessions.map((sessionItem) => (
@@ -398,11 +397,11 @@ export default function SettingsPage() {
                   </p>
                   <p className="text-xs text-[var(--color-muted)]">
                     {sessionItem.isCurrent
-                      ? "Current session"
-                      : "Active session"}
+                      ? t("settings.security.currentSession")
+                      : t("settings.security.activeSession")}
                   </p>
                   <p className="text-xs text-[var(--color-muted)]">
-                    Last active:{" "}
+                    {t("settings.security.lastActive")}{" "}
                     {new Date(sessionItem.lastSeenAt).toLocaleString()}
                   </p>
                 </div>
@@ -415,8 +414,8 @@ export default function SettingsPage() {
                     onClick={() => handleRevokeSession(sessionItem.id)}
                   >
                     {revokingSessionId === sessionItem.id
-                      ? "Removing..."
-                      : "Remove"}
+                      ? t("settings.security.removing")
+                      : t("settings.security.remove")}
                   </Button>
                 )}
               </div>
@@ -426,20 +425,20 @@ export default function SettingsPage() {
 
         <div className="rounded-xl border border-[var(--color-border)] p-4 space-y-3">
           <p className="font-semibold text-[var(--foreground)]">
-            Change password (email verification)
+            {t("settings.security.changePasswordTitle")}
           </p>
 
           {passwordChangeChallengeId && (
             <Input
-              label="E-Mail Code"
+              label={t("settings.security.emailCode")}
               value={passwordChangeCode}
               onChange={(event) => setPasswordChangeCode(event.target.value)}
-              placeholder="6-stelliger Code"
+              placeholder={t("settings.security.codePlaceholder")}
             />
           )}
 
           <Input
-            label="Neues Passwort"
+            label={t("settings.security.newPassword")}
             type="password"
             value={newPassword}
             onChange={(event) => setNewPassword(event.target.value)}
@@ -448,13 +447,15 @@ export default function SettingsPage() {
 
           <div className="flex gap-3">
             <Button variant="secondary" onClick={handleStartPasswordChange}>
-              Code senden
+              {t("settings.security.sendCode")}
             </Button>
             <Button
               onClick={handleConfirmPasswordChange}
               disabled={changingPassword}
             >
-              {changingPassword ? "Aktualisieren..." : "Passwort ändern"}
+              {changingPassword
+                ? t("settings.security.updating")
+                : t("settings.security.changePassword")}
             </Button>
           </div>
         </div>

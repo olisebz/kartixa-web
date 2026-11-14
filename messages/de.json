@@ -377,7 +377,32 @@
     },
     "save": "Änderungen speichern",
     "saved": "Einstellungen gespeichert!",
-    "savedMessage": "Deine Einstellungen wurden erfolgreich aktualisiert."
+    "savedMessage": "Deine Einstellungen wurden erfolgreich aktualisiert.",
+    "security": {
+      "title": "Sicherheit",
+      "description": "Verwalte aktive Sessions und ändere dein Passwort per E-Mail-Verifizierung.",
+      "noSessions": "Keine aktiven Sessions gefunden.",
+      "currentSession": "Aktuelle Session",
+      "activeSession": "Aktive Session",
+      "lastActive": "Zuletzt aktiv:",
+      "remove": "Entfernen",
+      "removing": "Wird entfernt...",
+      "sessionRemoved": "Session wurde entfernt",
+      "revokeFailed": "Session konnte nicht entfernt werden",
+      "changePasswordTitle": "Passwort ändern (E-Mail-Verifizierung)",
+      "emailCode": "E-Mail Code",
+      "codePlaceholder": "6-stelliger Code",
+      "newPassword": "Neues Passwort",
+      "sendCode": "Code senden",
+      "changePassword": "Passwort ändern",
+      "updating": "Aktualisieren...",
+      "codeSent": "Wir haben dir einen Verifizierungscode für die Passwortänderung gesendet.",
+      "requestCodeFirst": "Bitte zuerst einen Verifizierungscode anfordern",
+      "passwordTooShort": "Neues Passwort muss mindestens 8 Zeichen lang sein",
+      "passwordUpdated": "Passwort aktualisiert. Andere Sessions wurden abgemeldet.",
+      "startFailed": "Passwortänderung konnte nicht gestartet werden",
+      "changeFailed": "Passwort konnte nicht geändert werden"
+    }
   },
   "common": {
     "loading": "Lädt...",

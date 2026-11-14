@@ -46,8 +46,8 @@ Drivers, races, and standings are displayed in a clear and organized way.
       <img src="docs/screenshots/security.png" alt="Security settings with active sessions and password change">
       <p align="center"><b>Security</b> — see and revoke active sessions, change password via email code</p>
     </td>
-    <td width="50%" align="center">
-      <img src="docs/screenshots/mobile-standings.png" alt="Mobile view of league standings" width="260">
+    <td width="50%">
+      <img src="docs/screenshots/mobile.png" alt="Mobile views of leagues, standings and security settings">
       <p align="center"><b>Mobile</b> — responsive layout with bottom navigation</p>
     </td>
   </tr>

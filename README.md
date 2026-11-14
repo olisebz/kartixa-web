@@ -5,6 +5,8 @@
 Kartixa is a web app for creating and managing Go-Kart leagues.
 Drivers, races, and standings are displayed in a clear and organized way.
 
+![League overview with driver rankings and races](docs/screenshots/league-standings.png)
+
 ## Features
 
 - Create and view leagues
@@ -16,27 +18,91 @@ Drivers, races, and standings are displayed in a clear and organized way.
 - Active session list with session revocation
 - Email-based password reset and password change
 
+## Screenshots
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/screenshots/leagues.png" alt="Leagues overview with join-by-code">
+      <p align="center"><b>Leagues</b> — all your leagues at a glance, join others by invite code</p>
+    </td>
+    <td width="50%">
+      <img src="docs/screenshots/race-results.png" alt="Race results with podium">
+      <p align="center"><b>Race results</b> — positions, lap times, points, fastest lap and podium</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="docs/screenshots/drivers.png" alt="Driver management table">
+      <p align="center"><b>Drivers</b> — season stats per driver, with teams and numbers</p>
+    </td>
+    <td width="50%">
+      <img src="docs/screenshots/new-race.png" alt="New race form with points system">
+      <p align="center"><b>New race</b> — enter results, points are calculated automatically</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="docs/screenshots/security.png" alt="Security settings with active sessions and password change">
+      <p align="center"><b>Security</b> — see and revoke active sessions, change password via email code</p>
+    </td>
+    <td width="50%" align="center">
+      <img src="docs/screenshots/mobile-standings.png" alt="Mobile view of league standings" width="260">
+      <p align="center"><b>Mobile</b> — responsive layout with bottom navigation</p>
+    </td>
+  </tr>
+</table>
+
 ## Tech Stack
 
 - **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript
+- **Database:** MariaDB 11 with Drizzle ORM
+- **Auth:** NextAuth.js 5
 - **Styling:** Tailwind CSS 4
 - **Icons:** Lucide React
 
 ## Development
 
+Requirements: Node.js and Docker.
+
 ```bash
 # Install dependencies
 npm install
 
-# Start development server
+# Configure environment
+cp .env.example .env
+echo "DATABASE_HOST=localhost" > .env.local   # .env.example targets the Docker network
+
+# Start MariaDB (Docker) and wait until it is healthy (~30s)
+npm run dev:db
+
+# Create tables and load demo leagues, drivers and races
+DATABASE_HOST=localhost npm run db:migrate
+DATABASE_HOST=localhost npm run db:seed
+
+# Start development server on http://localhost:3000
 npm run dev
+```
 
-# Create production build
-npm run build
+Register an account in the app. With `MAIL_ENABLED=false` (the default) no emails are
+sent; verification codes are printed to the `npm run dev` terminal instead.
 
-# Run linting
-npm run lint
+The seed data has no users, so to see the demo leagues, make your account a member:
+
+```bash
+docker exec -i kartixa-db mariadb -ukartixa -pkartixa_dev kartixa -e "
+INSERT INTO league_memberships (id, league_id, user_id, role)
+SELECT UUID(), l.id, u.id, 'owner' FROM leagues l CROSS JOIN users u
+WHERE u.email = 'you@example.com';"
+```
+
+Other commands:
+
+```bash
+npm run build      # Create production build
+npm run lint       # Run linting
+npm run typecheck  # Type-check without emitting
 ```
 
 ## Auth Security Setup
